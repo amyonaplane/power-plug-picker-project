@@ -3,9 +3,9 @@ import { SelectedCountries } from "./SelectedCountries";
 import { Country } from "../data/countryData";
 
 const mockCountries: Country[] = [
-  { name: "United States", plugTypes: ["A", "B"] },
-  { name: "United Kingdom", plugTypes: ["G"] },
-  { name: "Germany", plugTypes: ["C", "F"] },
+  { name: "United States", code: "US", plugTypes: ["A", "B"] },
+  { name: "United Kingdom", code: "GB", plugTypes: ["G"] },
+  { name: "Germany", code: "DE", plugTypes: ["C", "F"] },
 ];
 
 describe("SelectedCountries", () => {

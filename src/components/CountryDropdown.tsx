@@ -47,7 +47,7 @@ export const CountryDropdown: React.FC<CountryDropdownProps> = ({
       <div className="search-box">
         <input
           type="text"
-          placeholder="Search countries..."
+          placeholder="Search countries by name or code (e.g., US, GB)..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           onFocus={() => setIsDropdownOpen(true)}
@@ -78,7 +78,10 @@ export const CountryDropdown: React.FC<CountryDropdownProps> = ({
                   onChange={() => {}}
                   className="checkbox"
                 />
-                <span>{country.name}</span>
+                <span className="country-name">
+                  {country.name}{" "}
+                  <span className="country-code">({country.code})</span>
+                </span>
                 <span className="plug-types">
                   {country.plugTypes.join(", ")}
                 </span>

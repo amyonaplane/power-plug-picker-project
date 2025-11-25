@@ -18,7 +18,7 @@ describe("App", () => {
     it("should render search input", () => {
       render(<App />);
       expect(
-        screen.getByPlaceholderText("Search countries...")
+        screen.getByPlaceholderText(/Search countries/)
       ).toBeInTheDocument();
     });
 
@@ -43,7 +43,7 @@ describe("App", () => {
 
     it("should filter countries based on search term", () => {
       render(<App />);
-      const searchInput = screen.getByPlaceholderText("Search countries...");
+      const searchInput = screen.getByPlaceholderText(/Search countries/);
 
       // Focus to open dropdown
       fireEvent.focus(searchInput);
@@ -56,11 +56,64 @@ describe("App", () => {
       expect(screen.getByText("United Arab Emirates")).toBeInTheDocument();
     });
 
+    it("should filter countries by country code", () => {
+      render(<App />);
+      const searchInput = screen.getByPlaceholderText(/Search countries/);
+
+      // Focus to open dropdown
+      fireEvent.focus(searchInput);
+
+      // Search by US code
+      fireEvent.change(searchInput, { target: { value: "US" } });
+
+      expect(screen.getByText("United States")).toBeInTheDocument();
+      expect(screen.queryByText("United Kingdom")).not.toBeInTheDocument();
+    });
+
+    it("should filter countries by partial country code", () => {
+      render(<App />);
+      const searchInput = screen.getByPlaceholderText(/Search countries/);
+
+      // Focus to open dropdown
+      fireEvent.focus(searchInput);
+
+      // Search by partial code "G" - should match GB, DE, etc.
+      fireEvent.change(searchInput, { target: { value: "G" } });
+
+      // Should show countries with G in their code or name
+      expect(screen.getByText("United Kingdom")).toBeInTheDocument(); // GB
+      expect(screen.getByText("Germany")).toBeInTheDocument(); // DE has G in name
+    });
+
+    it("should be case-insensitive when searching by country code", () => {
+      render(<App />);
+      const searchInput = screen.getByPlaceholderText(/Search countries/);
+
+      // Focus to open dropdown
+      fireEvent.focus(searchInput);
+
+      // Search by lowercase code
+      fireEvent.change(searchInput, { target: { value: "gb" } });
+
+      expect(screen.getByText("United Kingdom")).toBeInTheDocument();
+    });
+
+    it("should display country codes in dropdown", () => {
+      render(<App />);
+
+      // Open dropdown
+      fireEvent.focus(screen.getByPlaceholderText(/Search countries/));
+
+      // Should display country codes
+      expect(screen.getByText(/\(US\)/)).toBeInTheDocument();
+      expect(screen.getByText(/\(GB\)/)).toBeInTheDocument();
+    });
+
     it("should select a country when clicked", () => {
       render(<App />);
 
       // Open dropdown
-      fireEvent.focus(screen.getByPlaceholderText("Search countries..."));
+      fireEvent.focus(screen.getByPlaceholderText(/Search countries/));
 
       // Select a country
       const usaOption = screen.getByText("United States");
@@ -74,7 +127,7 @@ describe("App", () => {
       render(<App />);
 
       // Open dropdown
-      fireEvent.focus(screen.getByPlaceholderText("Search countries..."));
+      fireEvent.focus(screen.getByPlaceholderText(/Search countries/));
 
       // Select United States (Type A, B)
       fireEvent.click(screen.getByText("United States"));
@@ -90,7 +143,7 @@ describe("App", () => {
       render(<App />);
 
       // Open dropdown and select a country
-      fireEvent.focus(screen.getByPlaceholderText("Search countries..."));
+      fireEvent.focus(screen.getByPlaceholderText(/Search countries/));
       fireEvent.click(screen.getByText("United States"));
 
       // Remove the country
@@ -109,7 +162,7 @@ describe("App", () => {
       render(<App />);
 
       // Open dropdown
-      fireEvent.focus(screen.getByPlaceholderText("Search countries..."));
+      fireEvent.focus(screen.getByPlaceholderText(/Search countries/));
 
       // Select USA (A, B) and Canada (A, B)
       fireEvent.click(screen.getByText("United States"));
@@ -124,7 +177,7 @@ describe("App", () => {
       render(<App />);
 
       // Open dropdown
-      fireEvent.focus(screen.getByPlaceholderText("Search countries..."));
+      fireEvent.focus(screen.getByPlaceholderText(/Search countries/));
 
       // Select Switzerland (C, J)
       fireEvent.click(screen.getByText("Switzerland"));
@@ -147,7 +200,7 @@ describe("App", () => {
       render(<App />);
 
       // Open dropdown and select a country
-      fireEvent.focus(screen.getByPlaceholderText("Search countries..."));
+      fireEvent.focus(screen.getByPlaceholderText(/Search countries/));
       fireEvent.click(screen.getByText("United States"));
 
       // Empty state should be hidden

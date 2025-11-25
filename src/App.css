@@ -130,6 +130,18 @@ h1 {
   accent-color: #667eea;
 }
 
+.country-name {
+  flex: 1;
+  font-weight: 500;
+  color: #333;
+}
+
+.country-code {
+  font-size: 0.85rem;
+  color: #888;
+  font-weight: 400;
+}
+
 .dropdown-item span:nth-child(2) {
   flex: 1;
   font-weight: 500;

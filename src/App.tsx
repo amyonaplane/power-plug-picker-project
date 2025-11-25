@@ -12,9 +12,13 @@ function App() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const filteredCountries = useMemo(() => {
-    return countries.filter((country) =>
-      country.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    return countries.filter((country) => {
+      const searchLower = searchTerm.toLowerCase();
+      return (
+        country.name.toLowerCase().includes(searchLower) ||
+        country.code.toLowerCase().includes(searchLower)
+      );
+    });
   }, [searchTerm]);
 
   const uniquePlugTypes = useMemo(() => {

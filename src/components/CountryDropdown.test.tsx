@@ -3,9 +3,9 @@ import { CountryDropdown } from "./CountryDropdown";
 import { Country } from "../data/countryData";
 
 const mockCountries: Country[] = [
-  { name: "United States", plugTypes: ["A", "B"] },
-  { name: "United Kingdom", plugTypes: ["G"] },
-  { name: "Germany", plugTypes: ["C", "F"] },
+  { name: "United States", code: "US", plugTypes: ["A", "B"] },
+  { name: "United Kingdom", code: "GB", plugTypes: ["G"] },
+  { name: "Germany", code: "DE", plugTypes: ["C", "F"] },
 ];
 
 describe("CountryDropdown", () => {
@@ -26,7 +26,7 @@ describe("CountryDropdown", () => {
   describe("Rendering", () => {
     it("should render search input", () => {
       render(<CountryDropdown {...defaultProps} />);
-      const input = screen.getByPlaceholderText("Search countries...");
+      const input = screen.getByPlaceholderText(/Search countries/);
       expect(input).toBeInTheDocument();
     });
 
@@ -93,7 +93,7 @@ describe("CountryDropdown", () => {
 
     it("should call setSearchTerm when typing in search input", () => {
       render(<CountryDropdown {...defaultProps} />);
-      const input = screen.getByPlaceholderText("Search countries...");
+      const input = screen.getByPlaceholderText(/Search countries/);
       fireEvent.change(input, { target: { value: "United" } });
       expect(defaultProps.setSearchTerm).toHaveBeenCalledWith("United");
     });
@@ -107,7 +107,7 @@ describe("CountryDropdown", () => {
 
     it("should call setIsDropdownOpen when focusing on search input", () => {
       render(<CountryDropdown {...defaultProps} />);
-      const input = screen.getByPlaceholderText("Search countries...");
+      const input = screen.getByPlaceholderText(/Search countries/);
       fireEvent.focus(input);
       expect(defaultProps.setIsDropdownOpen).toHaveBeenCalledWith(true);
     });

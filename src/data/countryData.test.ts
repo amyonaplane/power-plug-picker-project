@@ -14,8 +14,11 @@ describe("countryData", () => {
     it("should have valid country structure", () => {
       countries.forEach((country) => {
         expect(country).toHaveProperty("name");
+        expect(country).toHaveProperty("code");
         expect(country).toHaveProperty("plugTypes");
         expect(typeof country.name).toBe("string");
+        expect(typeof country.code).toBe("string");
+        expect(country.code.length).toBe(2);
         expect(Array.isArray(country.plugTypes)).toBe(true);
         expect(country.plugTypes.length).toBeGreaterThan(0);
       });
@@ -25,6 +28,12 @@ describe("countryData", () => {
       const names = countries.map((c) => c.name);
       const uniqueNames = new Set(names);
       expect(names.length).toBe(uniqueNames.size);
+    });
+
+    it("should have unique country codes", () => {
+      const codes = countries.map((c) => c.code);
+      const uniqueCodes = new Set(codes);
+      expect(codes.length).toBe(uniqueCodes.size);
     });
   });
 
